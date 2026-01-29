@@ -87,7 +87,7 @@ public class MainRun {
         GlobalVar.getInstance().sVersionMax = "0";
         GlobalVar.getInstance().sVersionMin = "1";
         GlobalVar.getInstance().sVersionPatch = "0";
-        GlobalVar.getInstance().sVersionBuild = "15";
+        GlobalVar.getInstance().sVersionBuild = "17";
         GlobalVar.getInstance().sAuthor = "stupica.com - Bostjan Stupica";
 
         // Generate main program class

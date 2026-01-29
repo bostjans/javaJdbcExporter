@@ -6,42 +6,38 @@
          uniquely identify this project -->
     <groupId>com.stupica.prog</groupId>
     <artifactId>exporter</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>exporter</name>
     <organization>
         <name>developer.stupica.com</name>
         <url>http://www.stupica.com</url>
     </organization>
-    <url>http://developer.stupica.com/maven</url>
+    <url>https://developer.dev404.net/maven/</url>
 
     <prerequisites>
-        <maven>3.0.5</maven>
+        <maven>3.2.5</maven>
     </prerequisites>
 
     <properties>
-        <version.jdbc.mysql>5.1.49</version.jdbc.mysql>
-        <version.jdbc.mssql>7.4.1.jre8</version.jdbc.mssql>
-        <version.jdbc.oracle>12.2.0.1</version.jdbc.oracle>
-        <!--
-        <version.jdbc.db2>local</version.jdbc.db2>
-        <version.jdbc.db2>11.1.4.4</version.jdbc.db2>
-        <version.jdbc.db2>11.5.4.0</version.jdbc.db2>
-        <version.jdbc.db2>[11.1,11.2)</version.jdbc.db2>
-        <version.jdbc.db2>[11.5,11.6)</version.jdbc.db2>
-        -->
-        <version.jdbc.db2>local</version.jdbc.db2>
+        <java-version>1.8</java-version>
+        <maven.compiler.source>${java-version}</maven.compiler.source>
+        <maven.compiler.target>${java-version}</maven.compiler.target>
+        <start-class>om.stupica.exporter.MainRun</start-class>
 
-        <main.java.package>com.stupica.exporter.MainRun</main.java.package>
+        <!--
+        <version.jdbc.oracle>19.29.0.0</version.jdbc.oracle>
+        <version.jdbc.db2>local</version.jdbc.db2>
+        -->
+        <version.jdbc.db2>[11.5.9,11.6)</version.jdbc.db2>
     </properties>
 
     <!-- library dependencies -->
-
     <dependencies>
         <dependency>
             <groupId>com.stupica.base</groupId>
             <artifactId>jdbcKit</artifactId>
-            <version>1.5.0</version>
+            <version>[1.5.5,2)</version>
             <exclusions>
                 <exclusion>
                     <groupId>mysql</groupId>
@@ -51,22 +47,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.ibm.db2/jcc -->
-        <!--
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
             <version>${version.jdbc.db2}</version>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>com.ibm.db2</groupId>
-            <artifactId>db2jcc4</artifactId>
-            <version>${version.jdbc.db2}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm.db2</groupId>
-            <artifactId>db2jcc_license_cu</artifactId>
-            <version>${version.jdbc.db2}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -77,6 +62,14 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>3.5.3</version>
+            </extension>
+        </extensions>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -101,7 +94,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.5.0</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
@@ -114,7 +107,7 @@
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>${main.java.package}</mainClass>
+                            <mainClass>${start-class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -123,7 +116,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.6.0</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -131,7 +124,7 @@
                     <archive>
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <mainClass>${main.java.package}</mainClass>
+                            <mainClass>${start-class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -156,6 +149,20 @@
             <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>bDevRelease2</id>
+            <url>scpexe://www669.your-server.de/usr/home/mzqety/public_html/dev404Net/12developer/maven</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <url>https://github.com/bostjans/javaJdbcExporter</url>
+        <connection>https://github.com/bostjans/javaJdbcExporter.git</connection>
+        <developerConnection>https://github.com/bostjans/javaJdbcExporter.git</developerConnection>
+        <tag>v@{project.version}</tag>
+    </scm>
 
     <developers>
         <developer>
